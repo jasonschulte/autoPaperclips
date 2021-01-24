@@ -9,11 +9,12 @@ tag.onload = function(){
     const priceBufferRatio = 5;
     const wireBufferRatio = 10;
     const priceEasing = 5;
-    debugLevel = localStorage.getItem("debugLevel") || 0; // 1 - infrequent clicks, 2 - frequent clicks, 3 - every click
+    const startInvesting = 30;
+    debugLog = localStorage.getItem("debugLog") || 0; // 1 - infrequent clicks, 2 - frequent clicks, 3 - every click
     actionTaken = false;
     main = null;
     lastDecide = Date.now();
-    lastUnsoldClips = 0;    
+    lastUnsoldClips = 0;
     priceDown = 0;
     priceUp = 0;
     maxWireCost = parseInt($("#wireCost").html().replace(",",""));
@@ -30,8 +31,8 @@ tag.onload = function(){
         .append("<button id='btnAutoSave'>Save</button>")
         .append("<button id='btnDeleteSave'>Delete</button>")
         .append("<br />")
-        .append("<span id='debugLabel'>Debug Level: </span>")
-        .append("<select id='debugLevel'><option value='0' selected='selected'>Off</option><option value='1'>Level 1</option><option value='2'>Level 2</option><option value='3'>Level 3</option></select>")
+        .append("<span id='debugLabel'>Debug Log: </span>")
+        .append("<select id='debugLog'><option value='off' selected='selected'>OFF</option><option value='on'>ON</option></select>")
         .append("<br /><br />");
     if(localStorage.getItem("autoSaves") != null){
         autoSaves=JSON.parse(localStorage.getItem("autoSaves"));
@@ -43,9 +44,9 @@ tag.onload = function(){
     }else{
         $("#autoPlay").val('off');
     }
-    $("#debugLevel").val(debugLevel).change(function(){
-        debugLevel = $(this).val();
-        localStorage.setItem("debugLevel",$(this).val());
+    $("#debugLog").val(debugLog).change(function(){
+        debugLog = $(this).val();
+        localStorage.setItem("debugLog",$(this).val());
     });
     $("#btnAutoSave").click(function(){
         doAutoSave();
@@ -63,7 +64,7 @@ tag.onload = function(){
     });
     $("#autoPlay").change(function(){
         clearInterval(main);
-        if($(this).val() == 'on'){            
+        if($(this).val() == 'on'){
             main = setInterval(run,mainInterval);
         }
         localStorage.setItem("autoPlay",$(this).val());
@@ -88,7 +89,7 @@ tag.onload = function(){
             if(!actionTaken) setPrice();
             if(!actionTaken) doProjects();
             if(!actionTaken) newTourney();
-            if(!actionTaken) runTourney();            
+            if(!actionTaken) runTourney();
             if(!actionTaken) upgradeInvestmentEngine();
             if(!actionTaken) invest();
             if(!actionTaken) addPower();
@@ -112,8 +113,8 @@ tag.onload = function(){
         // BEGIN fastclick functions
         function makeClip(){
             if(cps < 1000){
-                clickBtn("MakePaperclip", 3, true);
-            }            
+                clickBtn("MakePaperclip", true);
+            }
         }
         function doCompute(){
             if(qFlag){
@@ -132,16 +133,16 @@ tag.onload = function(){
                 score = 0;
                 chips.forEach(chip => {
                     score += parseFloat($(chip).attr("style").replace("opacity: ","").slice(0,-1))
-                });            
+                });
                 if(qComputing && score >= 0.00001){
-                    clickBtn("Qcompute", 3, true);
+                    clickBtn("Qcompute", true);
                 }
             }
         }
         function launchProbe(){
             if(unusedClips >= probeCost){
-                clickBtn("MakeProbe", 3, true);
-            }            
+                clickBtn("MakeProbe", true);
+            }
         }
         // END fastclick functions
         // BEGIN slowclick functions
@@ -155,7 +156,7 @@ tag.onload = function(){
                 }
                 else if
                 (
-                    unsoldClips > priceBuffer 
+                    unsoldClips > priceBuffer
                     && (unsoldClips > lastUnsoldClips || unsoldClips > priceBuffer * 2)
                 ){
                     priceDown++
@@ -163,7 +164,7 @@ tag.onload = function(){
                     if(priceDown >= priceEasing && margin >= 0.02){
                         clickBtn("LowerPrice");
                         priceDown = 0;
-                    }                
+                    }
                 }else if (cps > 1 && demand > 5){
                     priceUp++
                     priceDown = 0;
@@ -177,13 +178,13 @@ tag.onload = function(){
 		}
 		function buyWire(){
             if(humanFlag && (!wireBuyerFlag || !wireBuyerStatus) && (wire < wireBuffer || wire < 1)
-            ){                
+            ){
                 clickBtn("BuyWire");
             }
 		}
 		function buyAutoClipper(){
             if(autoClipperFlag && clipmakerLevel < 75 && wire > wireBuffer
-                && funds + (unsoldClips * 0.02) > (maxWireCost + clipperCost)                
+                && funds + (unsoldClips * 0.02) > (maxWireCost + clipperCost)
             ){
                 if(marketingLvl == 1 && clipmakerLevel < 40
                     || clipmakerLevel >= 40 && marketingLvl >1
@@ -195,7 +196,7 @@ tag.onload = function(){
 		function buyMegaClipper(){
             if(megaClipperFlag
                 && (megaClipperLevel < 40 || avgRev * 25 > megaClipperCost)
-                && funds + (unsoldClips * 0.02) > (maxWireCost + megaClipperCost) 
+                && funds + (unsoldClips * 0.02) > (maxWireCost + megaClipperCost)
                 && megaClipperLevel <=120
             ){
                 clickBtn("MakeMegaClipper");
@@ -284,12 +285,11 @@ tag.onload = function(){
                     58,  //  Drone Improvement 2
                     59,  //  Drone Improvement 3
                     56,  //  Factory Improvement 3
-                    
                 ],
-                7:[ 
+                7:[
                     44,  // Space Exploration
                     61,  // Theory of Mind
-                    60,  // Auto Tourney                    
+                    60,  // Auto Tourney
                     67,  // Bonus Yomi
                     68,  // Hazard reduction
                     69,  // Reboot the Swarm
@@ -336,7 +336,7 @@ tag.onload = function(){
                 )
             ){
                 clickBtn("AddProc");
-            }            
+            }
 		}
 		function addMemory(){
             if(compFlag
@@ -347,7 +347,7 @@ tag.onload = function(){
                 )
             ){
                 clickBtn("AddMem");
-            }            
+            }
 		}
 		function newTourney(){
             if(strategyEngineFlag && operations >= standardOps){
@@ -385,7 +385,7 @@ tag.onload = function(){
                     projectBtn = $("#" + project.id);
                     if(
                         (
-                            $(projectBtn).is(":visible") 
+                            $(projectBtn).is(":visible")
                             && (bankroll + funds) > projectCost
                             && funds < projectCost
                         )
@@ -395,9 +395,9 @@ tag.onload = function(){
                     }
                 })
             }
-        }            
-        function invest(){    
-            if(investmentEngineFlag && investLevel > 3 && megaClipperLevel >= 40
+        }
+        function invest(){
+            if(investmentEngineFlag && investLevel > 3 && megaClipperLevel >= startInvesting
                 &&  (portTotal < 1 || funds * 20 > portTotal)
                 &&  funds + portTotal < 512000000
             ){
@@ -410,7 +410,7 @@ tag.onload = function(){
                 powerConsumption = parseInt($("#powerConsumptionRate").html().replace(",",""));
                 powerProduction = parseInt($("#powerProductionRate").html().replace(",",""));
                 powerRatio = (availableMatter > 1 ? 0.9 : 0.6);
-                if(powerConsumption >= (powerProduction * powerRatio) 
+                if(powerConsumption >= (powerProduction * powerRatio)
                     || powerProduction == 0
                     || powerConsumption > powerProduction - 150
                 ){
@@ -431,7 +431,6 @@ tag.onload = function(){
                     }else{
                         clickBtn("MakeBattery");
                     }
-                    
                 }
             }
 		}
@@ -484,15 +483,13 @@ tag.onload = function(){
                 }else{
                     sliderVal = 150;
                 }
-                
-                // sliderVal = Math.min(sliderVal,190)
                 if($("#slider").val() != sliderVal){
                     $("#slider").val(sliderVal);
                     actionTaken = true;
-                    if(debugLevel >= 1){
+                    if(debugLog){
                         console.log("SliderAdjust: " + sliderVal);
                     }
-                }                
+                }
             }
 		}
 		function exploreSpace(){
@@ -566,7 +563,7 @@ tag.onload = function(){
                 !actionTaken && probeWire > probeConfig.wire && clickBtn("LowerProbeWire");
                 !actionTaken && probeCombat < probeConfig.combat && clickBtn("RaiseProbeCombat");
                 !actionTaken && probeCombat > probeConfig.combat && clickBtn("LowerProbeCombat");
-            }            
+            }
         }
     }
     function choosePrestige(){
@@ -614,7 +611,7 @@ tag.onload = function(){
         projectsUses = autoSaves[saveId].loadProjectsUses;
         projectsFlags = autoSaves[saveId].loadProjectsFlags;
         projectsActive = autoSaves[saveId].loadProjectsActive;
-        stratsActive = autoSaves[saveId].loadStratsActive;        
+        stratsActive = autoSaves[saveId].loadStratsActive;
         localStorage.setItem("saveGame",saveGame);
         localStorage.setItem("saveProjectsUses",projectsUses);
         localStorage.setItem("saveProjectsFlags",projectsFlags);
@@ -630,17 +627,17 @@ tag.onload = function(){
             updateAutoSaveList();
             if($("#autoSaves option[value='" + saveId + "']")){
                 $("#autoSaves").val(saveId);
-            }            
-        }        
+            }
+        }
     }
-    function clickBtn(buttonName,debug = 1,fastClick = false){
+    function clickBtn(buttonName,fastClick = false){
         buttonID = "#btn" + buttonName
         if(!$(buttonID).prop("disabled")){
             $(buttonID).trigger("click");
             if(!fastClick){
                 actionTaken = true;
             }
-            if(debug <= debugLevel){
+            if(debugLog){
                 console.log(buttonName);
             }
         }
@@ -651,7 +648,7 @@ tag.onload = function(){
         if($(buttonID).is(":visible") && !$(buttonID).prop("disabled")){
             $(buttonID).trigger("click");
             actionTaken = true;
-            if(debugLevel >= 1){
+            if(debugLog){
                 console.log("Project: " + project.title);
             }
             autoSave && doAutoSave(project.title);
