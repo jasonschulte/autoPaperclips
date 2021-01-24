@@ -68,6 +68,7 @@ tag.onload = function(){
         }
         localStorage.setItem("autoPlay",$(this).val());
     })
+
     function run(){
         cps = parseInt($("#clipmakerRate").html().replace(",",""));
         priceBuffer = Math.max(priceBufferRatio, cps * priceBufferRatio);
@@ -152,7 +153,11 @@ tag.onload = function(){
                 else if(cps > unsoldClips){
                     clickBtn("RaisePrice");
                 }
-                else if(unsoldClips > priceBuffer && (unsoldClips > lastUnsoldClips || unsoldClips > priceBuffer * 2)){
+                else if
+                (
+                    unsoldClips > priceBuffer 
+                    && (unsoldClips > lastUnsoldClips || unsoldClips > priceBuffer * 2)
+                ){
                     priceDown++
                     priceUp = 0;
                     if(priceDown >= priceEasing && margin >= 0.02){
