@@ -8,7 +8,6 @@ tag.onload = function(){
     const priceBufferRatio = 5;
     const wireBufferRatio = 5;
     const priceEasing = 5;
-    const droneEasing = 5;
     const startInvesting = 30; // how many megaclippers before investing
     priceBuffer = 0;
     wireBuffer = 0;
@@ -544,7 +543,7 @@ tag.onload = function(){
                     combat:0
                 };
                 spaceExplored = Math.round($("#colonizedDisplay").html());
-                if(processors > 1500 && spaceExplored < 100){
+                if(processors > 1500 && spaceExplored < 100 && probeTrust >= 30){
                     probeConfig.nav = 1;
                 }
                 if((availableMatter < 1 || projects[62].flag) && spaceExplored < 100){
@@ -577,39 +576,22 @@ tag.onload = function(){
                     probeTrustUsed += value;
                 })
                 probeConfig.rep = probeTrust - probeTrustUsed;
-                // console.log(probeConfig);
-                // console.log(wire + " " + spaceExplored + " " + probeConfig.nav);
-                if(droneChange > droneEasing){
-                    !actionTaken && probeRep < probeConfig.rep && clickBtn("RaiseProbeRep");
-                    !actionTaken && probeRep > probeConfig.rep && clickBtn("LowerProbeRep");
-                    !actionTaken && probeHaz < probeConfig.haz && clickBtn("RaiseProbeHaz");
-                    !actionTaken && probeHaz > probeConfig.haz && clickBtn("LowerProbeHaz");
-                    !actionTaken && probeNav < probeConfig.nav && clickBtn("RaiseProbeNav");
-                    !actionTaken && probeNav > probeConfig.nav && clickBtn("LowerProbeNav");
-                    !actionTaken && probeSpeed < probeConfig.speed && clickBtn("RaiseProbeSpeed");
-                    !actionTaken && probeSpeed > probeConfig.speed && clickBtn("LowerProbeSpeed");
-                    !actionTaken && probeFac < probeConfig.fac && clickBtn("RaiseProbeFac");
-                    !actionTaken && probeFac > probeConfig.fac && clickBtn("LowerProbeFac");
-                    !actionTaken && probeHarv < probeConfig.harv && clickBtn("RaiseProbeHarv");
-                    !actionTaken && probeHarv > probeConfig.harv && clickBtn("LowerProbeHarv");
-                    !actionTaken && probeWire < probeConfig.wire && clickBtn("RaiseProbeWire");
-                    !actionTaken && probeWire > probeConfig.wire && clickBtn("LowerProbeWire");
-                    !actionTaken && probeCombat < probeConfig.combat && clickBtn("RaiseProbeCombat");
-                    !actionTaken && probeCombat > probeConfig.combat && clickBtn("LowerProbeCombat");
-                }
-                if(probeSpeed == probeConfig.speed
-                    && probeNav == probeConfig.nav
-                    && probeRep == probeConfig.rep
-                    && probeHaz == probeConfig.haz
-                    && probeFac == probeConfig.fac
-                    && probeHarv == probeConfig.harv
-                    && probeWire == probeConfig.wire
-                    && probeCombat == probeConfig.combat
-                ){
-                    droneChange = 0;
-                }else{
-                    droneChange++;
-                }
+                !actionTaken && probeRep < probeConfig.rep && clickBtn("RaiseProbeRep");
+                !actionTaken && probeRep > probeConfig.rep && clickBtn("LowerProbeRep");
+                !actionTaken && probeHaz < probeConfig.haz && clickBtn("RaiseProbeHaz");
+                !actionTaken && probeHaz > probeConfig.haz && clickBtn("LowerProbeHaz");
+                !actionTaken && probeNav < probeConfig.nav && clickBtn("RaiseProbeNav");
+                !actionTaken && probeNav > probeConfig.nav && clickBtn("LowerProbeNav");
+                !actionTaken && probeSpeed < probeConfig.speed && clickBtn("RaiseProbeSpeed");
+                !actionTaken && probeSpeed > probeConfig.speed && clickBtn("LowerProbeSpeed");
+                !actionTaken && probeFac < probeConfig.fac && clickBtn("RaiseProbeFac");
+                !actionTaken && probeFac > probeConfig.fac && clickBtn("LowerProbeFac");
+                !actionTaken && probeHarv < probeConfig.harv && clickBtn("RaiseProbeHarv");
+                !actionTaken && probeHarv > probeConfig.harv && clickBtn("LowerProbeHarv");
+                !actionTaken && probeWire < probeConfig.wire && clickBtn("RaiseProbeWire");
+                !actionTaken && probeWire > probeConfig.wire && clickBtn("LowerProbeWire");
+                !actionTaken && probeCombat < probeConfig.combat && clickBtn("RaiseProbeCombat");
+                !actionTaken && probeCombat > probeConfig.combat && clickBtn("LowerProbeCombat");
             }
         }
     }
