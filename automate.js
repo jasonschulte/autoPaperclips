@@ -433,7 +433,7 @@ tag.onload = function(){
             if(project127.flag == 1 && spaceFlag == 0){
                 powerConsumption = parseInt($("#powerConsumptionRate").html().replace(",",""));
                 powerProduction = parseInt($("#powerProductionRate").html().replace(",",""));
-                if(batteryLevel < 1000 && batteryCost * 50 < unusedClips && powerProduction > powerConsumption){
+                if(batteryLevel < 1000 && batteryCost * 100 < unusedClips && powerProduction > powerConsumption){
                     if(batteryLevel < 900){
                         clickBtn("Batteryx100") || clickBtn("Batteryx10") || clickBtn("MakeBattery");
                     }else if(batteryLevel < 990){
