@@ -146,7 +146,7 @@ tag.onload = function(){
         }
         function launchProbe(){
             spaceExplored = Math.round($("#colonizedDisplay").html());
-            if(unusedClips >= probeCost && spaceFlag && spaceExplored < 1){                
+            if(unusedClips >= probeCost && spaceFlag && spaceExplored < 1){
                 clickBtn("MakeProbe", true);
             }
         }
@@ -228,7 +228,7 @@ tag.onload = function(){
                     16,  // +1 trust
                     19,   // +1 trust
                     45,  // Quantum Computing
-                ],                
+                ],
                 3:[
                     46,  // Photonic Chips
                 ],
@@ -327,7 +327,7 @@ tag.onload = function(){
                         projectBtn = $("#" + project.id);
                         if(projectId != 72 || projects[71].flag){
                             doProject(project);
-                        }                        
+                        }
                         phaseComplete = (project.flag && (!projectBtn.is(":visible") || phaseProjects.length == 1));
                         return !actionTaken;
                     })
