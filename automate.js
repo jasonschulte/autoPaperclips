@@ -3,7 +3,6 @@ tag.src = "https://code.jquery.com/jquery-3.5.1.slim.min.js";
 tag.integrity = "sha256-4+XzXVhsDmqanXGHaHvgh1gMQKX40OUvDEBTu8JcmNs=";
 tag.crossOrigin = "anonymous"
 tag.onload = function(){
-    const maxMegaClippers = 125;
     const mainInterval = 25;
     const decideEvery = 500;
     const priceBufferRatio = 5;
