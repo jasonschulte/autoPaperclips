@@ -91,6 +91,8 @@ tag.onload = function(){
             if(!actionTaken) withdraw();
             if(!actionTaken) buyWire();
             if(!actionTaken) setPrice();
+            if(!actionTaken) increaseMaxTrust();
+            if(!actionTaken) increaseProbeTrust();
             if(!actionTaken) doProjects();
             if(!actionTaken) newTourney();
             if(!actionTaken) runTourney();
@@ -98,20 +100,18 @@ tag.onload = function(){
             if(!actionTaken) invest();
             if(!actionTaken) addPower();
             if(!actionTaken) adjustSlider();
-            if(!actionTaken) choosePrestige();
             if(!actionTaken) addHarvesterDrone();
             if(!actionTaken) addWireDrone();
             if(!actionTaken) addFactory();
             if(!actionTaken) addBattery();
             if(!actionTaken) exploreSpace();
-            if(!actionTaken) increaseMaxTrust();
-            if(!actionTaken) increaseProbeTrust();
             if(!actionTaken) probeDesign();
             if(!actionTaken) buyMegaClipper();
             if(!actionTaken) buyAutoClipper();
             if(!actionTaken) increaseMarketing();
             if(!actionTaken) synchronizeSwarm();
             if(!actionTaken) entertainSwarm();
+            if(!actionTaken) choosePrestige();
         }
         // BEGIN fastclick functions
         function makeClip(){
@@ -418,7 +418,7 @@ tag.onload = function(){
             if(project127.flag == 1 && spaceFlag == 0){
                 powerConsumption = parseInt($("#powerConsumptionRate").html().replace(",",""));
                 powerProduction = parseInt($("#powerProductionRate").html().replace(",",""));
-                powerRatio = (availableMatter > 1 ? 0.9 : 0.6);
+                powerRatio = 0.9;
                 if(powerConsumption >= (powerProduction * powerRatio)
                     || powerProduction == 0
                     || powerConsumption > powerProduction - 150
@@ -499,7 +499,7 @@ tag.onload = function(){
                 if($("#slider").val() != sliderVal){
                     $("#slider").val(sliderVal);
                     actionTaken = true;
-                    if(debugLog){
+                    if(debugLog == 'on'){
                         console.log("SliderAdjust: " + sliderVal);
                     }
                 }
@@ -542,7 +542,7 @@ tag.onload = function(){
                     wire:0,
                     combat:0
                 };
-                spaceExplored = Math.round($("#colonizedDisplay").html());
+                spaceExplored = Math.floor($("#colonizedDisplay").html());
                 if(processors > 1500 && spaceExplored < 100 && probeTrust >= 30){
                     probeConfig.nav = 1;
                 }
@@ -560,9 +560,9 @@ tag.onload = function(){
                     }
                 }
                 if(probeConfig.nav == 0){
-                    if(acquiredMatter < 1 && spaceExplored < 100 && availableMatter > 0){
+                    if(acquiredMatter < 1 && availableMatter > 0){
                         probeConfig.harv = 1;
-                    }else if(wire < 1 && spaceExplored < 100 && acquiredMatter > 0){
+                    }else if(wire < 1 && acquiredMatter > 0){
                         probeConfig.wire = 1;
                     }else if(wire > 0){
                         probeConfig.fac = 1;
